@@ -1,0 +1,8 @@
+# Site-specific additions and overrides for usr.sbin.mysqld.
+# For more details, please see /etc/apparmor.d/local/README.
+/opt/log/mysql.log rw,
+/opt/log/mysql.err rw,
+/opt/data/mysql/ r,
+/opt/data/mysql/** rwk,
+/opt/log/mysql/ r,
+/opt/log/mysql/* rw,

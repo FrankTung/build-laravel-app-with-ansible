@@ -1,0 +1,19 @@
+---
+-
+name:Install Mysql packages
+apt: name={ item } state=present
+with_items:
+	-mysql-server
+	-mysql-client
+
+- name: Move Mysql's location
+  notify:
+  - stop mysql
+  command: cp -Rp /var/lib/mysql/ /opt/data/
+
+- name: Create Mysql configuration file
+  template: src=my.cnf dest=/etc/mysql/my.cnf
+
+- name: Start Mysql Service
+  service: name=mysql state=started enabled=yes
+

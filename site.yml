@@ -1,0 +1,15 @@
+---
+# This playbook deploys the laravel application.
+
+-
+name: Install php-fpm,nginx,mysql and laravel
+hosts:laravel-server
+remote_user: root
+
+roles:
+	- php
+	- nginx
+	- mysql
+	- common
+	- composer
+	- laravel

@@ -1,0 +1,35 @@
+- name: install nginx
+  apt: name={{ item }} state=present force=yes
+  with_items:
+    - libc6
+    - libc6-dev
+    - libpcrecpp0
+    - libpcre3
+    - libpcre3-dev
+    - nginx
+  notify: start nginx
+
+
+- name: create log directory
+  file: path=/opt/log/nginx/ state=directory  owner=www-data group=www-data mode=755
+
+- name: ensure log directory perm
+  file: path=/opt/log/nginx state=touch mode=755
+  file: path=/opt/log state=touch mode=755
+
+- name: create htdocs directory
+  file: path=/opt/htdocs state=directory owner=www-data group=www-data mode=755
+
+- name: copy default document root
+  copy: src=opt/htdocs/default/ dest=/opt/htdocs/default/ owner=www-data group=www-data mode=755
+
+- name: copy nginx config
+  copy: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: copy nginx sites-enabled config
+  copy: src=etc/nginx/sites-enabled/ dest=/etc/nginx/sites-enabled/
+  notify: reload nginx
+
+- name: copy logrotate config
+  copy: src=etc/logrotate.d/nginx dest=/etc/logrotate.d/nginx
