@@ -1,8 +1,6 @@
 ---
--
-name: restart mysql
-service: name=mysql state=restart
+- name: restart mysql
+  service: name=mysql state=restart
 
--
-name: stop mysql
-service: name=mysql state=stopped
+- name: stop mysql
+  service: name=mysql state=stopped

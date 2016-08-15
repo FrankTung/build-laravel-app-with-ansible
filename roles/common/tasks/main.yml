@@ -1,35 +1,31 @@
 --
--
-name: Install common services
-apt:{item} state=present
-with_items:
-	- vim
-	- htop
-	- make
-	- git
-	- git-core
-	- libpcre3
-	- libpcre3-dev
-	- memcached
-	- libmysqlclient-dev
+- name: Install common services
+  apt: {item} state=present
+  with_items:
+    - vim
+    - htop
+    - make
+    - git
+    - git-core
+    - libpcre3
+    - libpcre3-dev
+    - memcached
+    - libmysqlclient-dev
 
--
-name: Mount data driver
-service: name=nginx state=stopped
-command: supervisorctl stop all
-service: name=mysql state=stopped
-copy: src=etc/fstab dest=/etc/fstab
-command: mount -a
-command: df -h
+- name: Mount data driver
+  service: name=nginx state=stopped
+  command: supervisorctl stop all
+  service: name=mysql state=stopped
+  copy: src=etc/fstab dest=/etc/fstab
+  command: mount -a
+  command: df -h
 
--
-name: Change the limits of authority of apparmor
-copy: src=etc/apparmor.d/local/usr.sbin.mysqld dest=/etc/apparmor.d/local/usr.sbin.mysqld
+- name: Change the limits of authority of apparmor
+  copy: src=etc/apparmor.d/local/usr.sbin.mysqld dest=/etc/apparmor.d/local/usr.sbin.mysqld
 
--
-name: Prepare the project's directory and move the log's directory
-file: path=/opt/htdocs state=directory owner=www-data group=www-data recurse=yes
-command: cp -Rp /var/log /opt/log
+- name: Prepare the project's directory and move the log's directory
+  file: path=/opt/htdocs state=directory owner=www-data group=www-data recurse=yes
+  command: cp -Rp /var/log /opt/log
 
 
 
