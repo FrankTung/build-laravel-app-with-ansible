@@ -1,5 +1,5 @@
 - name: install nginx
-  apt: name={{ item }} state=present force=yes
+  apt: name={{item}} state=present force=yes
   with_items:
     - libc6
     - libc6-dev
@@ -15,7 +15,7 @@
 
 - name: ensure log directory perm
   file: path=/opt/log/nginx state=touch mode=755
-  file: path=/opt/log state=touch mode=755
+- file: path=/opt/log state=touch mode=755
 
 - name: create htdocs directory
   file: path=/opt/htdocs state=directory owner=www-data group=www-data mode=755

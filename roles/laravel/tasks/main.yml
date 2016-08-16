@@ -1,15 +1,14 @@
 ---
 
 - name: Create Laravel project
-command: composer create-project --prefer-dist laravel/laravel
-args:
+  command: composer create-project --prefer-dist laravel/laravel
+  args:
     chdir: /opt/htdocs
     creates: /opt/htdocs/laravel
 
-dependencies:
-  - { role: nginx }
-
-
-- name: copy nginx sites-enabled config
+- name: Copy nginx sites-enabled config
   copy: src=etc/nginx/sites-enabled/laravel.conf dest=/etc/nginx/sites-enabled/laravel.conf
+
+- name: Reload nginx
+  include: roles/nginx/handlers/main.yml
   notify: reload nginx

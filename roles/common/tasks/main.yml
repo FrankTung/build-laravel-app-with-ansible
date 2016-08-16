@@ -1,6 +1,6 @@
---
+---
 - name: Install common services
-  apt: {item} state=present
+  apt: name={{item}} state=present
   with_items:
     - vim
     - htop
@@ -14,10 +14,20 @@
 
 - name: Mount data driver
   service: name=nginx state=stopped
+
+- name: Stop supervisorctl
   command: supervisorctl stop all
+
+- name: Stop mysql
   service: name=mysql state=stopped
+
+- name: Edit fstab file
   copy: src=etc/fstab dest=/etc/fstab
+
+- name: Check status
   command: mount -a
+
+- name: Check status
   command: df -h
 
 - name: Change the limits of authority of apparmor
@@ -25,6 +35,8 @@
 
 - name: Prepare the project's directory and move the log's directory
   file: path=/opt/htdocs state=directory owner=www-data group=www-data recurse=yes
+
+- name: Move logs file
   command: cp -Rp /var/log /opt/log
 
 

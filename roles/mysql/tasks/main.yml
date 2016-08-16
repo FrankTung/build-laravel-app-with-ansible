@@ -1,9 +1,9 @@
 ---
-- name:Install Mysql packages
-  apt: name={ item } state=present
+- name: Install Mysql packages
+  apt: name={{item}} state=present
   with_items:
-	-mysql-server
-	-mysql-client
+    - mysql-server
+    - mysql-client
 
 - name: Move Mysql's location
   notify:
