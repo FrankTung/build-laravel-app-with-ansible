@@ -12,3 +12,6 @@
 - name: Reload nginx
   include: roles/nginx/handlers/main.yml
   notify: reload nginx
+
+- name: Chown the project
+  file: path=/opt/htdocs/laravel state=directory owner=www-data group=www-data recurse=yes

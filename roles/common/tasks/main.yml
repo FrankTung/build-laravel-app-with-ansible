@@ -11,6 +11,7 @@
     - libpcre3-dev
     - memcached
     - libmysqlclient-dev
+    - supervisor
 
 - name: Mount data driver
   service: name=nginx state=stopped
@@ -19,16 +20,8 @@
   command: supervisorctl stop all
 
 - name: Stop mysql
-  service: name=mysql state=stopped
-
-- name: Edit fstab file
-  copy: src=etc/fstab dest=/etc/fstab
-
-- name: Check status
-  command: mount -a
-
-- name: Check status
-  command: df -h
+  include: roles/mysql/handlers/main.yml
+  notify: stop mysql
 
 - name: Change the limits of authority of apparmor
   copy: src=etc/apparmor.d/local/usr.sbin.mysqld dest=/etc/apparmor.d/local/usr.sbin.mysqld
@@ -39,6 +32,11 @@
 - name: Move logs file
   command: cp -Rp /var/log /opt/log
 
+- name: Start supervisorctl
+  command: supervisorctl start all
 
+- name: Start mysql
+  include: roles/mysql/handlers/main.yml
+  notify: start mysql
 
 
